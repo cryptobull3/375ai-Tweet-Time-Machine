@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tweet Time Machine</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #game-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        .tweet {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        .options button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .options button:hover {
+            background-color: #0056b3;
+        }
+        #score {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="tweet-container">
+            <p class="tweet" id="tweet-text"></p>
+        </div>
+        <div class="options" id="options-container">
+            <!-- Option buttons will be added here dynamically -->
+        </div>
+        <div id="score">
+            Score: <span id="current-score">0</span> / <span id="total-questions">0</span>
+        </div>
+    </div>
+
+    <script>
+        const tweets = [
+            { text: "The 375go Discovery Testnet is LIVE! Join us and build a smarter, more connected world. Download our mobile app on IOS or Android and start earning rewards ...", month: "March" },
+            { text: "there will be no April Fools' tweeting from this account today", month: "April" },
+            { text: "Is Deepseek better at writing tweets than ChatGPT, asking for a friend..", month: "February" },
+            { text: "Read today's blog to learn about Chad's trajectory from aerospace to transportation to edge AI, what makes 375ai unique, and more", month: "January" },
+            { text: "Scan anytime, anyplace", month: "November" },
+            { text: "Read today's blog for more Discover the world you live in. Discover 375go. 375ai Launches the Next Generation in Edge AI with 375go ...", month: "December" },
+            { text: "375edge is live in sunny Hollywood CA, capturing high-fidelity real world data ☀ 120,000 + vehicles per day 1 Million + data points per ...", month: "October" },
+            { text: "Hey friends! I just joined 375ai , a Free #DePIN project built on #Solana, that lets users auto-report network conditions simply by moving through ...", month: "January" },
+            { text: "375ai Discovery Quest Pt. 2 | 7500 FCFS As we approach the 375 Testnet launch, Bruce needs you to prepare for what lies ahead.", month: "September" },
+            { text: "375ai Testnet Launching Soon! @375ai_ is building decentralized wireless and edge infrastructure, aiming to create a network where data is processed closer to its source.", month: "October" },
+            { text: "Coming soon! @WeAreDePIN. Podcast. We dive deep into. @375ai_. , AI with real-world data and how a decentralized model can transform network ...", month: "February" },
+            { text: "375AI INCENTIVIZED TESTNET @375ai_ is a ...", month: "December" },
+            { text: "375ai on X: Read today's blog for more Discover the world you live ...", month: "December" },
+            { text: "tb (@tb375ai) / X", month: "October" },
+            { text: "CryptoFi © on X: 375AI INCENTIVIZED TESTNET @375ai_ is a ...", month: "December" },
+            { text: "hottiebabegem ꧁IP꧂ Gnoma ‍♂, ‍♂ on X: 375ai ...", month: "September" },
+            { text: "Airdrop Adventure on X: 375ai Testnet Launching Soon! @375ai_ ...", month: "October" },
+            { text: "JardinFi on X: Hey friends! I just joined 375ai , a Free #DePIN ...", month: "January" },
+            { text: "375ai - X", month: "January" },
+            { text: "Harry Dewhirst (@harry_dewhirst) / X", month: "February" }
+        ];
+
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let currentTweetIndex = 0;
+        let score = 0;
+
+        const tweetText = document.getElementById('tweet-text');
+        const optionsContainer = document.getElementById('options-container');
+        const currentScore = document.getElementById('current-score');
+        const totalQuestions = document.getElementById('total-questions');
+
+        function loadTweet() {
+            if (currentTweetIndex >= tweets.length) {
+                alert(Game Over! Your final score is ${score} out of ${tweets.length});
+                return;
+            }
+
+            const currentTweet = tweets[currentTweetIndex];
+            tweetText.textContent = currentTweet.text;
+
+            // Clear previous options
+            optionsContainer.innerHTML = '';
+
+            // Create a set to hold the options
+            const options = new Set();
+            options.add(currentTweet.month);
+
+            // Add three random months as incorrect options
+            while (options.size < 4) {
+                const randomMonth = months[Math.floor(Math.random() * months.length)];
+                options.add(randomMonth);
+}
+
+// Shuffle the options
+const shuffledOptions = Array.from(options).sort(() => 0.5 - Math.random());
+
+// Create buttons for each option
+shuffledOptions.forEach(option => {
+    const button = document.createElement('button');
+    button.textContent = option;
+    button.onclick = () => {
+        if (option === currentTweet.month) {
+            score++;
+        }
+        currentTweetIndex++;
+        currentScore.textContent = score;
+        totalQuestions.textContent = tweets.length;
+        loadTweet();
+    };
+    optionsContainer.appendChild(button);
+});
+
+// Update question count
+currentScore.textContent = score;
+totalQuestions.textContent = tweets.length;
+}
+
+// Start the game
+loadTweet();
